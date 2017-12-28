@@ -40,9 +40,38 @@ bench("topic_first") do
   Topic.first
 end
 
+bench("topic_first_cast") do
+  topic = Topic.first
+  topic.id
+  topic.name
+  topic.created_at
+  topic.updated_at
+end
+
+id = list.sample.id
+bench("topic_id") do
+  Topic[id]
+end
+
+bench("topic_id_cast") do
+  topic = Topic[id]
+  topic.id
+  topic.name
+  topic.created_at
+  topic.updated_at
+end
+
 id = list.sample.id
 bench("topic_find") do
   Topic.find(id: id)
+end
+
+bench("topic_find_cast") do
+  topic = Topic.find(id: id)
+  topic.id
+  topic.name
+  topic.created_at
+  topic.updated_at
 end
 
 id = list.sample.id
@@ -50,17 +79,63 @@ bench("topic_where") do
   Topic.where(id: id).first
 end
 
+bench("topic_where_cast") do
+  topic = Topic.where(id: id).first
+  topic.id
+  topic.name
+  topic.created_at
+  topic.updated_at
+end
+
 id = list.sample.id
 bench("topic_posts_eager") do
   Topic.eager(:posts).where(id: id).all
 end
 
+bench("topic_posts_eager_cast") do
+  Topic.eager(:posts).where(id: id).all.each do |topic|
+    topic.id
+    topic.name
+    topic.created_at
+    topic.updated_at
+    topic.posts.each do |post|
+        post.id
+        post.body
+        post.created_at
+        post.updated_at
+    end
+  end
+end
+
 id = list.sample.id
 topic = Topic.find(id: id)
 post_count = topic.posts.count
-from = Post.where(topic: topic).order(:updated_at).limit(post_count/2).select_map(:updated_at).last
-bench("topic_posts_index_filtered") do
-  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", from)).order(:updated_at).reverse.all
+post_from = Post.where(topic: topic).order(:updated_at).offset(post_count/2-1).limit(1).first
+bench("topic_posts_filtered") do
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.all
+end
+
+bench("topic_posts_filtered_cast") do
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.all.each do |post|
+    post.id
+    post.body
+    post.created_at
+    post.updated_at
+  end
+end
+
+bench("topic_posts_filtered_notime_cast") do
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.select(:id, :body).all.each do |post|
+    post.id
+    post.body
+  end
+end
+
+bench("topic_posts_filtered_time_cast") do
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.select(:created_at, :updated_at).all.each do |post|
+    post.created_at
+    post.updated_at
+  end
 end
 
 id = list.sample.id
