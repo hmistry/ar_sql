@@ -10,6 +10,7 @@ gem "sequel"
 gem "sqlite3"
 gem "pg"
 gem "minitest", "5.10.3"
+gem "sequel_pg"
 
 gem "faker"
 
