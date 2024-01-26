@@ -14,6 +14,8 @@ Instructions for use:
 
 # Result 2024-01-27
 
+- Macbook Air M1 16GB 512GB (Power)
+- OS: Soloma 14.2
 ### Active Record
 ```
 -----------------
