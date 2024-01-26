@@ -19,7 +19,7 @@ topic_count = NUM_OF_TOPICS - Topic.all.count
 
 topic_count = 0 if topic_count.negative?
 
-name = Faker::Hipster.word
+name = Faker::Hipster.words
 ActiveRecord::Base.transaction do
 topic_count.times do
   time = Time.now.utc - time_offset(100, 101)
@@ -31,7 +31,7 @@ topic_count.times do
 end
 end
 
-post_body = Faker::Hipster.paragraphs(2).to_s
+post_body = Faker::Hipster.paragraphs(number: 2).to_s
 comment_body = Faker::Hipster.sentence.to_s
 ActiveRecord::Base.transaction do
 Topic.all.each do |topic|

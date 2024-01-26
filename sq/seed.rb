@@ -27,7 +27,7 @@ DB.transaction do
 topic_count.times do
   time = Time.now.utc - time_offset(100, 101)
   Topic.create(
-    name: Faker::Hipster.word,
+    name: Faker::Hipster.words,
     created_at: time,
     updated_at: time + time_offset(0, 1)
   )
@@ -41,7 +41,7 @@ Topic.all.each do |topic|
     time = topic.created_at + time_offset(0, 80)
     post = Post.create(
               topic: topic,
-              body: Faker::Hipster.paragraphs(rand(1..3)).to_s,
+              body: Faker::Hipster.paragraphs(number: 2).to_s,
               created_at: time,
               updated_at: time + time_offset(0, 1)
             )
