@@ -4,7 +4,7 @@ require "./db.rb"
 require "./models.rb"
 require "faker"
 
-NUM_OF_TOPICS = 10
+NUM_OF_TOPICS = 10000
 NUM_OF_POSTS_PER_TOPIC = 100
 NUM_OF_COMMENTS_PER_POST = 20
 
@@ -19,7 +19,7 @@ topic_count = NUM_OF_TOPICS - Topic.all.count
 
 topic_count = 0 if topic_count.negative?
 
-name = Faker::Hipster.words
+name = Faker::Hipster.word
 ActiveRecord::Base.transaction do
 topic_count.times do
   time = Time.now.utc - time_offset(100, 101)
