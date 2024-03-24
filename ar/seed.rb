@@ -4,7 +4,7 @@ require "./db.rb"
 require "./models.rb"
 require "faker"
 
-NUM_OF_TOPICS = 10
+NUM_OF_TOPICS = 10000
 NUM_OF_POSTS_PER_TOPIC = 100
 NUM_OF_COMMENTS_PER_POST = 20
 
@@ -31,7 +31,7 @@ topic_count.times do
 end
 end
 
-post_body = Faker::Hipster.paragraphs(2).to_s
+post_body = Faker::Hipster.paragraphs(number: 2).to_s
 comment_body = Faker::Hipster.sentence.to_s
 ActiveRecord::Base.transaction do
 Topic.all.each do |topic|

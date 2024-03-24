@@ -2,14 +2,14 @@
 
 source "https://rubygems.org"
 
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+ruby "3.2.2"
 
 # Activate the gem you are reporting the issue against.
-gem "activerecord", "~> 5.1.0"
+gem "activerecord"
 gem "sequel"
 gem "sqlite3"
 gem "pg"
-gem "minitest", "5.10.3"
+gem "minitest"
 gem "sequel_pg"
 
 gem "faker"

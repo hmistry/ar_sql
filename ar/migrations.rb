@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "./db.rb"
-
 ActiveRecord::Schema.define do
   create_table :comments, force: true do |t|
     t.integer :post_id

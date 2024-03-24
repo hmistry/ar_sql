@@ -93,7 +93,7 @@ bench("topic_posts_eager") do
 end
 
 bench("topic_posts_eager_cast") do
-  Topic.eager(:posts).where(id: id).all.each do |topic|
+  Topic.eager(:posts).where(id: id).paged_each do |topic|
     topic.id
     topic.name
     topic.created_at
@@ -116,7 +116,7 @@ bench("topic_posts_filtered") do
 end
 
 bench("topic_posts_filtered_cast") do
-  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.all.each do |post|
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.paged_each do |post|
     post.id
     post.body
     post.created_at
@@ -125,14 +125,15 @@ bench("topic_posts_filtered_cast") do
 end
 
 bench("topic_posts_filtered_notime_cast") do
-  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.select(:id, :body).all.each do |post|
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.select(:id, :body).paged_each do |post|
     post.id
     post.body
   end
 end
 
 bench("topic_posts_filtered_time_cast") do
-  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.select(:created_at, :updated_at).all.each do |post|
+  Post.where(topic: topic).where(Sequel.lit("updated_at > ?", post_from.updated_at)).order(:updated_at).reverse.select(:id,:created_at, :updated_at).paged_each do |post|
+    post.id
     post.created_at
     post.updated_at
   end
